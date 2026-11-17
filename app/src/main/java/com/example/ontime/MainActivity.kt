@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.ontime.ui.schedule.ScheduleScreen
+import com.example.ontime.ui.navigation.OnTimeApp
 import com.example.ontime.ui.theme.OnTimeTheme
 
 class MainActivity : ComponentActivity() {
@@ -15,10 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             OnTimeTheme {
-                ScheduleScreen(
-                    onLessonClick = { },
-                    onAddLessonClick = { }
-                )
+                OnTimeApp()
             }
         }
     }
@@ -26,11 +23,8 @@ class MainActivity : ComponentActivity() {
 
 @Preview(showBackground = true)
 @Composable
-fun ScheduleScreenPreview() {
+fun OnTimeAppPreview() {
     OnTimeTheme {
-        ScheduleScreen(
-            onLessonClick = { },
-            onAddLessonClick = { }
-        )
+        OnTimeApp()
     }
 }

@@ -11,6 +11,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.ontime.ui.schedule.AddEditLessonScreen
+import com.example.ontime.ui.schedule.LessonDetailScreen
 import com.example.ontime.ui.schedule.ScheduleScreen
 
 @Composable
@@ -45,9 +47,13 @@ fun OnTimeNavHost(
         composable(
             route = Screen.LessonDetail.route,
             arguments = listOf(navArgument("lessonId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val lessonId = backStackEntry.arguments?.getInt("lessonId") ?: 0
-            PlaceholderScreen("Lesson details, id = $lessonId")
+        ) {
+            LessonDetailScreen(
+                onBackClick = { navController.navigateUp() },
+                onEditClick = { lessonId ->
+                    navController.navigate(Screen.AddEditLesson.createRoute(lessonId))
+                }
+            )
         }
 
         composable(
@@ -58,9 +64,11 @@ fun OnTimeNavHost(
                     defaultValue = -1
                 }
             )
-        ) { backStackEntry ->
-            val lessonId = backStackEntry.arguments?.getInt("lessonId") ?: -1
-            PlaceholderScreen(if (lessonId == -1) "Add lesson" else "Edit lesson $lessonId")
+        ) {
+            AddEditLessonScreen(
+                onBackClick = { navController.navigateUp() },
+                onSaved = { navController.navigateUp() }
+            )
         }
     }
 }

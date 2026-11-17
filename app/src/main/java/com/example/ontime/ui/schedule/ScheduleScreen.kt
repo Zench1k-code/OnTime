@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ontime.ui.components.DaySelector
 import com.example.ontime.ui.components.LessonItem
+import androidx.compose.foundation.layout.WindowInsets
 
 @Composable
 fun ScheduleScreen(
@@ -36,6 +37,7 @@ fun ScheduleScreen(
 
     Scaffold(
         modifier = modifier,
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         floatingActionButton = {
             FloatingActionButton(onClick = onAddLessonClick) {
                 Icon(Icons.Filled.Add, contentDescription = "Add lesson")

@@ -17,6 +17,12 @@
 - Adding new assignments with a deadline
 - Alarms and reminders that can be turned on and off
 
+## Tasks (assignments)
+- **Tasks tab** - all assignments with a "done" checkbox, filters (All / Active / Done), sorted by the nearest deadline. Overdue assignments are shown in red.
+- **Add / edit assignment** - title, description, a related lesson and a deadline picked with a date picker. Assignments can be deleted.
+- **Lesson details** - shows the assignments of that lesson, and a new assignment can be added with the lesson already selected.
+- Navigation route `assignment_edit?assignmentId={id}&lessonId={id}` - both arguments are optional: `assignmentId` opens edit mode, `lessonId` pre-selects the lesson.
+
 ## Future plans
 - Role selection: student or teacher
 - Saving data on the device

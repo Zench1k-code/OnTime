@@ -61,6 +61,12 @@ fun OnTimeNavHost(
                 onBackClick = { navController.navigateUp() },
                 onEditClick = { lessonId ->
                     navController.navigate(Screen.AddEditLesson.createRoute(lessonId))
+                },
+                onAssignmentClick = { assignmentId ->
+                    navController.navigate(Screen.AddEditAssignment.createRoute(assignmentId = assignmentId))
+                },
+                onAddAssignmentClick = { lessonId ->
+                    navController.navigate(Screen.AddEditAssignment.createRoute(lessonId = lessonId))
                 }
             )
         }

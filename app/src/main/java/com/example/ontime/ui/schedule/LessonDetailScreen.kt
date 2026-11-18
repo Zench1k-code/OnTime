@@ -3,11 +3,15 @@ package com.example.ontime.ui.schedule
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
@@ -28,18 +32,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ontime.data.model.Assignment
 import com.example.ontime.data.model.Lesson
 import com.example.ontime.ui.components.AppTopBar
+import com.example.ontime.ui.components.AssignmentItem
 import com.example.ontime.ui.components.lessonTypeLabel
 
 @Composable
 fun LessonDetailScreen(
     onBackClick: () -> Unit,
     onEditClick: (Int) -> Unit,
+    onAssignmentClick: (Int) -> Unit,
+    onAddAssignmentClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LessonDetailViewModel = viewModel()
 ) {
     val lesson by viewModel.lesson.collectAsState()
+    val assignments by viewModel.assignments.collectAsState()
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -76,6 +85,10 @@ fun LessonDetailScreen(
         } else {
             LessonDetailContent(
                 lesson = current,
+                assignments = assignments,
+                onAssignmentClick = onAssignmentClick,
+                onAssignmentCheckedChange = viewModel::toggleAssignmentDone,
+                onAddAssignmentClick = { onAddAssignmentClick(current.id) },
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -101,10 +114,18 @@ fun LessonDetailScreen(
 }
 
 @Composable
-private fun LessonDetailContent(lesson: Lesson, modifier: Modifier = Modifier) {
+private fun LessonDetailContent(
+    lesson: Lesson,
+    assignments: List<Assignment>,
+    onAssignmentClick: (Int) -> Unit,
+    onAssignmentCheckedChange: (Int) -> Unit,
+    onAddAssignmentClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -124,6 +145,36 @@ private fun LessonDetailContent(lesson: Lesson, modifier: Modifier = Modifier) {
                 if (lesson.room.isNotBlank()) DetailRow("Room", lesson.room)
                 if (lesson.group.isNotBlank()) DetailRow("Group", lesson.group)
                 if (lesson.note.isNotBlank()) DetailRow("Note", lesson.note)
+            }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Assignments",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f)
+            )
+            TextButton(onClick = onAddAssignmentClick) {
+                Icon(Icons.Filled.Add, contentDescription = null)
+                Text("Add")
+            }
+        }
+        if (assignments.isEmpty()) {
+            Text(
+                text = "No assignments for this lesson",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        } else {
+            assignments.forEach { assignment ->
+                AssignmentItem(
+                    assignment = assignment,
+                    onCheckedChange = { onAssignmentCheckedChange(assignment.id) },
+                    onClick = { onAssignmentClick(assignment.id) }
+                )
             }
         }
     }

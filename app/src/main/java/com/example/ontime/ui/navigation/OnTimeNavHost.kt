@@ -14,6 +14,8 @@ import androidx.navigation.navArgument
 import com.example.ontime.ui.schedule.AddEditLessonScreen
 import com.example.ontime.ui.schedule.LessonDetailScreen
 import com.example.ontime.ui.schedule.ScheduleScreen
+import com.example.ontime.ui.tasks.AddEditAssignmentScreen
+import com.example.ontime.ui.tasks.TasksScreen
 
 @Composable
 fun OnTimeNavHost(
@@ -37,7 +39,14 @@ fun OnTimeNavHost(
         }
 
         composable(Screen.Tasks.route) {
-            PlaceholderScreen("Tasks")
+            TasksScreen(
+                onTaskClick = { assignmentId ->
+                    navController.navigate(Screen.AddEditAssignment.createRoute(assignmentId = assignmentId))
+                },
+                onAddTaskClick = {
+                    navController.navigate(Screen.AddEditAssignment.createRoute())
+                }
+            )
         }
 
         composable(Screen.Alarm.route) {
@@ -66,6 +75,25 @@ fun OnTimeNavHost(
             )
         ) {
             AddEditLessonScreen(
+                onBackClick = { navController.navigateUp() },
+                onSaved = { navController.navigateUp() }
+            )
+        }
+
+        composable(
+            route = Screen.AddEditAssignment.route,
+            arguments = listOf(
+                navArgument("assignmentId") {
+                    type = NavType.IntType
+                    defaultValue = -1
+                },
+                navArgument("lessonId") {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) {
+            AddEditAssignmentScreen(
                 onBackClick = { navController.navigateUp() },
                 onSaved = { navController.navigateUp() }
             )

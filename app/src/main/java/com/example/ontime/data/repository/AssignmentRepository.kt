@@ -38,6 +38,10 @@ object AssignmentRepository {
         _assignments.update { list -> list.filterNot { it.id == id } }
     }
 
+    fun deleteAssignmentsOfLesson(lessonId: Int) {
+        _assignments.update { list -> list.filterNot { it.lessonId == lessonId } }
+    }
+
     fun toggleDone(id: Int) {
         _assignments.update { list ->
             list.map { if (it.id == id) it.copy(isDone = !it.isDone) else it }

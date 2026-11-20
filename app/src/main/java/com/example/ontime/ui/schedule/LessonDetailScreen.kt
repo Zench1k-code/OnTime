@@ -98,7 +98,7 @@ fun LessonDetailScreen(
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
             title = { Text("Delete lesson?") },
-            text = { Text("This lesson will be removed from your schedule.") },
+            text = { Text("This lesson, its assignments and its alarm will be removed.") },
             confirmButton = {
                 TextButton(onClick = {
                     showDeleteDialog = false

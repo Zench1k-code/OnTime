@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ontime.data.model.Assignment
 import com.example.ontime.data.model.Lesson
+import com.example.ontime.data.repository.AlarmRepository
 import com.example.ontime.data.repository.AssignmentRepository
 import com.example.ontime.data.repository.LessonRepository
 import kotlinx.coroutines.flow.SharingStarted
@@ -42,7 +43,10 @@ class LessonDetailViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
         AssignmentRepository.toggleDone(id)
     }
 
+    // The lesson's assignments and alarm are removed together with the lesson
     fun deleteLesson() {
         LessonRepository.deleteLesson(lessonId)
+        AssignmentRepository.deleteAssignmentsOfLesson(lessonId)
+        AlarmRepository.deleteAlarm(lessonId)
     }
 }

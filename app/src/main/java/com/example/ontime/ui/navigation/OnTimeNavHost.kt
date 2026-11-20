@@ -1,16 +1,14 @@
 package com.example.ontime.ui.navigation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.ontime.ui.alarm.AlarmScreen
+import com.example.ontime.ui.alarm.AlarmSettingsScreen
 import com.example.ontime.ui.schedule.AddEditLessonScreen
 import com.example.ontime.ui.schedule.LessonDetailScreen
 import com.example.ontime.ui.schedule.ScheduleScreen
@@ -50,7 +48,21 @@ fun OnTimeNavHost(
         }
 
         composable(Screen.Alarm.route) {
-            PlaceholderScreen("Alarm")
+            AlarmScreen(
+                onAlarmClick = { lessonId ->
+                    navController.navigate(Screen.AlarmSettings.createRoute(lessonId))
+                }
+            )
+        }
+
+        composable(
+            route = Screen.AlarmSettings.route,
+            arguments = listOf(navArgument("lessonId") { type = NavType.IntType })
+        ) {
+            AlarmSettingsScreen(
+                onBackClick = { navController.navigateUp() },
+                onSaved = { navController.navigateUp() }
+            )
         }
 
         composable(
@@ -104,15 +116,5 @@ fun OnTimeNavHost(
                 onSaved = { navController.navigateUp() }
             )
         }
-    }
-}
-
-@Composable
-private fun PlaceholderScreen(text: String) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text)
     }
 }

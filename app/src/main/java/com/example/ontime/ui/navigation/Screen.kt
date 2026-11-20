@@ -10,6 +10,10 @@ sealed class Screen(val route: String) {
         fun createRoute(lessonId: Int) = "lesson/$lessonId"
     }
 
+    data object AlarmSettings : Screen("alarm/{lessonId}") {
+        fun createRoute(lessonId: Int) = "alarm/$lessonId"
+    }
+
     data object AddEditLesson : Screen("lesson_edit?lessonId={lessonId}") {
         fun createRoute(lessonId: Int? = null) =
             if (lessonId == null) "lesson_edit" else "lesson_edit?lessonId=$lessonId"

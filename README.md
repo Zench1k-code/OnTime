@@ -22,6 +22,8 @@
 - **Lesson details** - type, day, time, room, group, note; edit and delete with a confirmation dialog.
 - **Add / edit lesson** - one form for both modes, quick time slots, validation (name required, HH:MM time, start before end).
 - Navigation routes `lesson/{lessonId}` and `lesson_edit?lessonId={lessonId}`.
+- **Saved on the device** - lessons are stored in a Room database (`LessonEntity`, `LessonDao`, `AppDatabase`) and stay after the app is restarted.
+- **Settings** - gear icon on the Schedule screen; the theme (Same as system / Light / Dark) is saved with DataStore.
 
 ## Tasks (assignments) (Bekzat)
 - **Tasks tab** - all assignments with a "done" checkbox, filters (All / Active / Done), sorted by the nearest deadline. Overdue assignments are shown in red.
@@ -42,16 +44,16 @@
 ### Requirement 9 - Room and DataStore
 
 **Zarip**
-- [ ] Room, KSP and DataStore dependencies
-- [ ] `LessonEntity` (table `lessons`) and mappers `toLesson()` / `toEntity()`
-- [ ] `LessonDao` with CRUD: `@Insert`, `@Query`, `@Update`, `@Delete`
-- [ ] `AppDatabase` (`data/local/AppDatabase.kt`)
-- [ ] `OnTimeApplication` creates the database and initialises repositories
-- [ ] `LessonRepository` saves lessons in Room (same public functions, so other screens do not change)
-- [ ] DataStore: theme setting (System / Light / Dark) in `SettingsRepository`
-- [ ] Settings screen (gear icon on the Schedule screen) and theme applied in `MainActivity`
+- [x] Room, KSP and DataStore dependencies
+- [x] `LessonEntity` (table `lessons`) and mappers `toLesson()` / `toEntity()`
+- [x] `LessonDao` with CRUD: `@Insert`, `@Query`, `@Update`, `@Delete`
+- [x] `AppDatabase` (`data/local/AppDatabase.kt`)
+- [x] `OnTimeApplication` creates the database and initialises repositories
+- [x] `LessonRepository` saves lessons in Room (same public functions, so other screens do not change)
+- [x] DataStore: theme setting (System / Light / Dark) in `SettingsRepository`
+- [x] Settings screen (gear icon on the Schedule screen) and theme applied in `MainActivity`
 
-**Bekzat** (start after Zarip's Room pull request is merged into `main`)
+**Bekzat** (Zarip's Room code is already in `main` - you can start now)
 - [ ] `AssignmentEntity` + `AssignmentDao`
 - [ ] `LessonAlarmEntity` + `AlarmDao`
 - [ ] Add both entities to `AppDatabase` (`entities = [...]`, raise `version` by 1) and add the DAO functions
@@ -60,7 +62,7 @@
 - [ ] Remove the sample assignments that point to lesson ids 1-3 (lessons now come from the database)
 
 ### Requirement 8 - REST API with Retrofit (Bekzat, can start now)
-- API: Nager.Date public holidays (free, no key): `https://date.nager.at/api/v3/PublicHolidays/{year}/{countryCode}`
+- API: Nager.Date public holidays (free, no key): `https://nagerholidays.com/api/v3/PublicHolidays/{year}/{countryCode}` (example: `https://nagerholidays.com/api/v3/PublicHolidays/2026/KZ` returns 14 holidays with `date`, `localName`, `name`)`
 - [ ] `INTERNET` permission in `AndroidManifest.xml`
 - [ ] Retrofit + JSON converter dependencies
 - [ ] `HolidayDto` data class, `HolidayApi` Retrofit interface with a `suspend` function

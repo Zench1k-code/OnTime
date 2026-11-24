@@ -7,8 +7,8 @@
 - **Teachers** - manage their teaching schedule, plan assignments for classes and track deadlines.
 
 ## Team
-- Zarip Kanat
-- Bekzat Nurtaiuly
+- Zarip Kanat - schedule, navigation, Room database setup, DataStore settings
+- Bekzat Nurtaiuly - tasks, alarms, Room for tasks and alarms, REST API (Retrofit)
 
 ## Main features
 - Weekly lesson schedule by day
@@ -17,25 +17,69 @@
 - Adding new assignments with a deadline
 - An alarm for every lesson that can be turned on and off
 
-## Tasks (assignments)
+## Schedule (Zarip)
+- **Schedule tab** - day chips Mo-Su, lessons of the selected day sorted by time. Today is selected when the app opens.
+- **Lesson details** - type, day, time, room, group, note; edit and delete with a confirmation dialog.
+- **Add / edit lesson** - one form for both modes, quick time slots, validation (name required, HH:MM time, start before end).
+- Navigation routes `lesson/{lessonId}` and `lesson_edit?lessonId={lessonId}`.
+
+## Tasks (assignments) (Bekzat)
 - **Tasks tab** - all assignments with a "done" checkbox, filters (All / Active / Done), sorted by the nearest deadline. Overdue assignments are shown in red.
 - **Add / edit assignment** - title, description, a related lesson and a deadline picked with a date picker. Assignments can be deleted.
 - **Lesson details** - shows the assignments of that lesson, and a new assignment can be added with the lesson already selected.
-- Navigation route `assignment_edit?assignmentId={id}&lessonId={id}` - both arguments are optional: `assignmentId` opens edit mode, `lessonId` pre-selects the lesson.
+- Navigation route `assignment_edit?assignmentId={id}&lessonId={id}` - both arguments are optional.
 
-## Alarms
-- **Alarm tab** - every lesson in the schedule has its own alarm. The list is grouped by day and shows the ring time, the lesson and an on/off switch.
+## Alarms (Bekzat)
+- **Alarm tab** - every lesson has its own alarm, grouped by day, with the ring time and an on/off switch.
 - **Next alarm** - a card at the top shows when the next alarm rings and how much time is left.
-- **Alarm settings** - choose how many minutes before the lesson the alarm rings (quick options 5 / 10 / 15 / 30 / 60 or - / + buttons) and turn it on or off. The ring time is shown before saving.
-- Navigation route `alarm/{lessonId}` opens the settings of a lesson's alarm.
+- **Alarm settings** - how many minutes before the lesson the alarm rings, on/off.
 - When a lesson is deleted, its alarm and assignments are deleted too.
 
-## Future plans
-- Role selection: student or teacher
-- Saving data on the device
-- Deadline notifications and an alarm with sound
+---
+
+## Week 13: Requirements 8 and 9 (in progress)
+
+### Requirement 9 - Room and DataStore
+
+**Zarip**
+- [ ] Room, KSP and DataStore dependencies
+- [ ] `LessonEntity` (table `lessons`) and mappers `toLesson()` / `toEntity()`
+- [ ] `LessonDao` with CRUD: `@Insert`, `@Query`, `@Update`, `@Delete`
+- [ ] `AppDatabase` (`data/local/AppDatabase.kt`)
+- [ ] `OnTimeApplication` creates the database and initialises repositories
+- [ ] `LessonRepository` saves lessons in Room (same public functions, so other screens do not change)
+- [ ] DataStore: theme setting (System / Light / Dark) in `SettingsRepository`
+- [ ] Settings screen (gear icon on the Schedule screen) and theme applied in `MainActivity`
+
+**Bekzat** (start after Zarip's Room pull request is merged into `main`)
+- [ ] `AssignmentEntity` + `AssignmentDao`
+- [ ] `LessonAlarmEntity` + `AlarmDao`
+- [ ] Add both entities to `AppDatabase` (`entities = [...]`, raise `version` by 1) and add the DAO functions
+- [ ] Initialise `AssignmentRepository` and `AlarmRepository` in `OnTimeApplication`, the same way as `LessonRepository.init(...)`
+- [ ] Move both repositories to Room with the same pattern as `LessonRepository` (keep the public functions)
+- [ ] Remove the sample assignments that point to lesson ids 1-3 (lessons now come from the database)
+
+### Requirement 8 - REST API with Retrofit (Bekzat, can start now)
+- API: Nager.Date public holidays (free, no key): `https://date.nager.at/api/v3/PublicHolidays/{year}/{countryCode}`
+- [ ] `INTERNET` permission in `AndroidManifest.xml`
+- [ ] Retrofit + JSON converter dependencies
+- [ ] `HolidayDto` data class, `HolidayApi` Retrofit interface with a `suspend` function
+- [ ] `HolidayRepository`
+- [ ] `HolidaysViewModel` with `StateFlow` and UI states **Loading / Success / Error / Empty**
+- [ ] `HolidaysScreen`: progress indicator, list, error message with a **Retry** button, empty message
+- [ ] Navigation route and an entry point (for example an icon on the Schedule screen or a fourth tab)
+
+### Defense checklist
+- [ ] Successful API request, loading and error with Retry (turn off the internet on the emulator)
+- [ ] Room CRUD: add, open, edit, delete a lesson and an assignment
+- [ ] Close and reopen the app: data and theme are still there
+- [ ] Each of us explains our own code and shows our commits
+
+---
 
 ## Tech stack
 - Kotlin, Jetpack Compose, Material 3
-- MVVM, ViewModel, StateFlow
+- MVVM, ViewModel, StateFlow, Kotlin Coroutines
 - Navigation Compose
+- Room, DataStore (Week 13)
+- Retrofit (Week 13)

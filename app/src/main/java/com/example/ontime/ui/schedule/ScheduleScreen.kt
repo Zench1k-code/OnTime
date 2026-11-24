@@ -25,11 +25,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ontime.ui.components.DaySelector
 import com.example.ontime.ui.components.LessonItem
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.IconButton
+import com.example.ontime.ui.components.AppTopBar
 
 @Composable
 fun ScheduleScreen(
     onLessonClick: (Int) -> Unit,
     onAddLessonClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ScheduleViewModel = viewModel()
 ) {
@@ -38,6 +42,17 @@ fun ScheduleScreen(
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        topBar = {
+            AppTopBar(
+                title = "Schedule",
+                canNavigateBack = false,
+                actions = {
+                    IconButton(onClick = onSettingsClick) {
+                        Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                    }
+                }
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddLessonClick) {
                 Icon(Icons.Filled.Add, contentDescription = "Add lesson")

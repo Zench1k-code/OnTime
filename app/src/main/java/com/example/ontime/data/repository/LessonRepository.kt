@@ -1,37 +1,47 @@
 package com.example.ontime.data.repository
 
+import com.example.ontime.data.local.LessonDao
+import com.example.ontime.data.local.toEntity
+import com.example.ontime.data.local.toLesson
 import com.example.ontime.data.model.Lesson
-import com.example.ontime.data.model.LessonType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 object LessonRepository {
 
-    private val _lessons = MutableStateFlow(
-        listOf(
-            Lesson(1, "INF 345", LessonType.OTHER, "06-N", "VR 22", 1, "12:30", "14:20"),
-            Lesson(2, "CSS 251", LessonType.LAB, "14-L", "VR 2", 2, "15:30", "17:20"),
-            Lesson(3, "CSS 312", LessonType.LECTURE, "01-N", "G304", 3, "11:30", "12:20")
-        )
-    )
+    private lateinit var dao: LessonDao
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    private val _lessons = MutableStateFlow<List<Lesson>>(emptyList())
     val lessons: StateFlow<List<Lesson>> = _lessons.asStateFlow()
 
-    private var nextId = 4
+    fun init(lessonDao: LessonDao) {
+        dao = lessonDao
+        scope.launch {
+            dao.getAllLessons().collect { entities ->
+                _lessons.value = entities.map { it.toLesson() }
+            }
+        }
+    }
 
     fun getLessonById(id: Int): Lesson? =
         _lessons.value.find { it.id == id }
 
     fun addLesson(lesson: Lesson) {
-        _lessons.update { it + lesson.copy(id = nextId++) }
+        scope.launch { dao.insert(lesson.toEntity().copy(id = 0)) }
     }
 
     fun updateLesson(lesson: Lesson) {
-        _lessons.update { list -> list.map { if (it.id == lesson.id) lesson else it } }
+        scope.launch { dao.update(lesson.toEntity()) }
     }
 
     fun deleteLesson(id: Int) {
-        _lessons.update { list -> list.filterNot { it.id == id } }
+        val lesson = getLessonById(id) ?: return
+        scope.launch { dao.delete(lesson.toEntity()) }
     }
 }

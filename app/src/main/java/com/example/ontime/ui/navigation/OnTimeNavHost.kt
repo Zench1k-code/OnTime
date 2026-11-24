@@ -12,6 +12,7 @@ import com.example.ontime.ui.alarm.AlarmSettingsScreen
 import com.example.ontime.ui.schedule.AddEditLessonScreen
 import com.example.ontime.ui.schedule.LessonDetailScreen
 import com.example.ontime.ui.schedule.ScheduleScreen
+import com.example.ontime.ui.settings.SettingsScreen
 import com.example.ontime.ui.tasks.AddEditAssignmentScreen
 import com.example.ontime.ui.tasks.TasksScreen
 
@@ -32,7 +33,16 @@ fun OnTimeNavHost(
                 },
                 onAddLessonClick = {
                     navController.navigate(Screen.AddEditLesson.createRoute())
+                },
+                onSettingsClick = {
+                    navController.navigate(Screen.Settings.route)
                 }
+            )
+        }
+
+        composable(Screen.Settings.route) {
+            SettingsScreen(
+                onBackClick = { navController.navigateUp() }
             )
         }
 

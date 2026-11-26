@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.ontime.ui.alarm.AlarmScreen
 import com.example.ontime.ui.alarm.AlarmSettingsScreen
+import com.example.ontime.ui.holidays.HolidaysScreen
 import com.example.ontime.ui.schedule.AddEditLessonScreen
 import com.example.ontime.ui.schedule.LessonDetailScreen
 import com.example.ontime.ui.schedule.ScheduleScreen
@@ -36,7 +37,16 @@ fun OnTimeNavHost(
                 },
                 onSettingsClick = {
                     navController.navigate(Screen.Settings.route)
+                },
+                onHolidaysClick = {
+                    navController.navigate(Screen.Holidays.route)
                 }
+            )
+        }
+
+        composable(Screen.Holidays.route) {
+            HolidaysScreen(
+                onBackClick = { navController.navigateUp() }
             )
         }
 

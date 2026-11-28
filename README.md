@@ -54,22 +54,22 @@
 - [x] Settings screen (gear icon on the Schedule screen) and theme applied in `MainActivity`
 
 **Bekzat** (Zarip's Room code is already in `main` - you can start now)
-- [ ] `AssignmentEntity` + `AssignmentDao`
-- [ ] `LessonAlarmEntity` + `AlarmDao`
-- [ ] Add both entities to `AppDatabase` (`entities = [...]`, raise `version` by 1) and add the DAO functions
-- [ ] Initialise `AssignmentRepository` and `AlarmRepository` in `OnTimeApplication`, the same way as `LessonRepository.init(...)`
-- [ ] Move both repositories to Room with the same pattern as `LessonRepository` (keep the public functions)
-- [ ] Remove the sample assignments that point to lesson ids 1-3 (lessons now come from the database)
+- [x] `AssignmentEntity` + `AssignmentDao`
+- [x] `LessonAlarmEntity` + `AlarmDao`
+- [x] Add both entities to `AppDatabase` (`entities = [...]`, raise `version` by 1) and add the DAO functions
+- [x] Initialise `AssignmentRepository` and `AlarmRepository` in `OnTimeApplication`, the same way as `LessonRepository.init(...)`
+- [x] Move both repositories to Room with the same pattern as `LessonRepository` (keep the public functions)
+- [x] Remove the sample assignments that point to lesson ids 1-3 (lessons now come from the database)
 
 ### Requirement 8 - REST API with Retrofit (Bekzat, can start now)
 - API: Nager.Date public holidays (free, no key): `https://nagerholidays.com/api/v3/PublicHolidays/{year}/{countryCode}` (example: `https://nagerholidays.com/api/v3/PublicHolidays/2026/KZ` returns 14 holidays with `date`, `localName`, `name`)`
-- [ ] `INTERNET` permission in `AndroidManifest.xml`
-- [ ] Retrofit + JSON converter dependencies
-- [ ] `HolidayDto` data class, `HolidayApi` Retrofit interface with a `suspend` function
-- [ ] `HolidayRepository`
-- [ ] `HolidaysViewModel` with `StateFlow` and UI states **Loading / Success / Error / Empty**
-- [ ] `HolidaysScreen`: progress indicator, list, error message with a **Retry** button, empty message
-- [ ] Navigation route and an entry point (for example an icon on the Schedule screen or a fourth tab)
+- [x] `INTERNET` permission in `AndroidManifest.xml`
+- [x] Retrofit + JSON converter dependencies
+- [x] `HolidayDto` data class, `HolidayApi` Retrofit interface with a `suspend` function
+- [x] `HolidayRepository`
+- [x] `HolidaysViewModel` with `StateFlow` and UI states **Loading / Success / Error / Empty**
+- [x] `HolidaysScreen`: progress indicator, list, error message with a **Retry** button, empty message
+- [x] Navigation route and an entry point (for example an icon on the Schedule screen or a fourth tab)
 
 ### Defense checklist
 - [ ] Successful API request, loading and error with Retry (turn off the internet on the emulator)

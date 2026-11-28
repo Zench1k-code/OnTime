@@ -5,10 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [LessonEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [LessonEntity::class, AssignmentEntity::class, LessonAlarmEntity::class],
+    version = 2,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun lessonDao(): LessonDao
+    abstract fun assignmentDao(): AssignmentDao
+    abstract fun alarmDao(): AlarmDao
 
     companion object {
         @Volatile

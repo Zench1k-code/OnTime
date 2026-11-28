@@ -59,4 +59,6 @@ dependencies {
     implementation("androidx.room:room-ktx:2.8.5")
     ksp("androidx.room:room-compiler:2.8.5")
     implementation("androidx.datastore:datastore-preferences:1.1.7")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 }
